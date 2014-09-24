@@ -1,14 +1,15 @@
 #!/usr/bin/python
 
+# Author: Devon Fritz
+# Date: 12.9.14
+# Creates visualizations of all of the data based on language, sex, organization type, and url
 import sys
 import feed_helpers
 import shlex
 import nltk
 import glob
 import os
-import numpy as np
-import matplotlib.pyplot as plt
-from pylab import *
+from graph_helpers import *
 
 if len(sys.argv) != 3:
     sys.exit("""Incorrect Parameters! Exiting
@@ -21,6 +22,8 @@ url_map = {}
 sex_map = {}
 orgtype_map = {}
 lang_map = {}
+
+print 'Building Word Counts'
 
 # Go through each file in the specified folder and read the files in
 for root, dirs, files in os.walk(datafolder, topdown=True):
@@ -56,10 +59,8 @@ for root, dirs, files in os.walk(datafolder, topdown=True):
             lang_map[lang] += wordcount
 
 # Final maps of the data               
-print lang_map
-print sex_map
-print orgtype_map
-print url_map
+print 'Creating Graphs'
+print 'Results created in: ' + outputdir
 
 a = []
 b = []
@@ -67,17 +68,11 @@ for k,v in lang_map.items():
     a.append(k)
     b.append(int(v))
 
-print a
-print b
-size = len(a)
-pos = arange(size) + .5
-rects1 = bar(pos, b, align = 'center', color = '#a1f1d1')
-xticks(pos, a)
-xlabel('Language')
-ylabel('Word Count')
-title('Word Counts by language')
-savefig('foo.png') 
-show()
+makeBarGraph(sex_map, False, 'Sex', 'Word Count', 'Word Counts by Sex', outputdir, 'word_count_by_sex.png')
+makeBarGraph(lang_map, False, 'Language', 'Word Count', 'Word Counts by Language', outputdir, 'word_count_by_language.png')
+makeBarGraph(orgtype_map, False, 'Organization Type', 'Word Count', 'Word Counts by Organization Type', outputdir, 'word_count_by_org_type.png')
+makeBarGraph(url_map, False, 'URL', 'Word Count', 'Word Counts by URL', outputdir, 'word_count_by_url.png')
+
 
 
 
