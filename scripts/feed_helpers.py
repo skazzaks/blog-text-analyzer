@@ -26,7 +26,7 @@ def downloadFeedEntries(rootFeedURL, outputDir, headerLine):
         else:
             text = Document(requests.get(e.link).content).summary()
             text = clean.clean_html(text)
-    
+
         newfile = open(outputDir + "%s%s" % (getDomainOfUrl(rootFeedURL), str(i)), "w")
         text = scrubText(text).encode("utf-8")
         newfile.write(headerLine)
@@ -39,8 +39,17 @@ def getDomainOfUrl(url):
     return r.match(url).group(1)
     
 def scrubText(text):
-    return removeExtraSpaces(removeHtmlTags(text))
+    return removeExtraStyles(removeExtraSpaces(removeHtmlTags(text)))
 
+def removeExtraStyles(text):
+     # remove some unwanted html that couldn't be cleaned up
+    reString = '(Normal 0.*?Style Definitions.*?mso.*?;})'
+    m = re.search(reString, text)
+    if(m is not None):
+        text = re.sub(reString,r'', text)
+        # print m.group(0)
+    return text
+    
 def removeHtmlTags(data):
     p = re.compile(r'<.*?>')
     return p.sub('', data)

@@ -1,0 +1,13 @@
+Devon Fritz
+
+This archive contains the following files and folders:
+
+/data - The textual blog data that is analyzed. There are english, german, and combined folders
+/input - Contains input files that have the list of blog files by language as well as some extra demographic information used for analysis
+/scripts - The scripts that I wrote for the collection and analysis of the data
+	consume_blog.py - Pulls down blog data given input files. The output is what is in the /data folder
+	visualize_data.py - Generates charts against the data
+	analyze_data.py - Analyzes the data
+
+/results - The results of various experiments
+
